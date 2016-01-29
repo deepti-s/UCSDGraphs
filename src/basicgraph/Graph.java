@@ -121,7 +121,6 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-<<<<<<< HEAD
 		// degree of a vertex = number of out edges + number of in edges
 		// for each vertex - out edges = out neighbors & in edges = in neighbors
 		List<Integer> degrees = new ArrayList<Integer>(numVertices);
@@ -134,10 +133,6 @@ public abstract class Graph {
 		
 		Collections.sort(degrees, Collections.reverseOrder());
 		return degrees;
-=======
-		// XXX: Implement in part 1 of week 1
-		return null;
->>>>>>> 51324571b8ded57af970477ec82c727c27a1e4af
 	}
 	
 	/**
