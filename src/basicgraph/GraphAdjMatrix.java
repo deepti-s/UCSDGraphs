@@ -70,8 +70,13 @@ public class GraphAdjMatrix extends Graph {
 	 */	
 	public List<Integer> getNeighbors(int v) {
 		List<Integer> neighbors = new ArrayList<Integer>();
+<<<<<<< HEAD
 		for (int i = 0; i < getNumVertices(); i++) {
 			for (int j = 0; j < adjMatrix[v][i]; j++) {
+=======
+		for (int i = 0; i < getNumVertices(); i ++) {
+			for (int j=0; j< adjMatrix[v][i]; j ++) {
+>>>>>>> 51324571b8ded57af970477ec82c727c27a1e4af
 				neighbors.add(i);
 			}
 		}
@@ -108,6 +113,7 @@ public class GraphAdjMatrix extends Graph {
 	 * @return List<Integer> a list of indices of vertices.  
 	 */	
 	public List<Integer> getDistance2(int v) {
+<<<<<<< HEAD
 		List<Integer> twoHopNeighbors = new ArrayList<Integer>();
 		for (int i = 0; i < getNumVertices(); i++) {
 			for (int j = 0; j < adjMatrix[v][i]; j++) {
@@ -115,6 +121,9 @@ public class GraphAdjMatrix extends Graph {
 			}
 		}
 		return twoHopNeighbors;
+=======
+		return null;
+>>>>>>> 51324571b8ded57af970477ec82c727c27a1e4af
 	}
 	
 	/**

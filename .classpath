@@ -3,7 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="libs"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+=======
+>>>>>>> 51324571b8ded57af970477ec82c727c27a1e4af
 	<classpathentry kind="lib" path="libs/javax.json-1.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
