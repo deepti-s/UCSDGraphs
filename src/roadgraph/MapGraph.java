@@ -1,14 +1,17 @@
 /**
  * @author UCSD MOOC development team and YOU
  * 
- * A class which reprsents a graph of geographic locations
+ * A class which represents a graph of geographic locations
  * Nodes in the graph are intersections between 
  *
  */
 package roadgraph;
 
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -23,16 +26,44 @@ import util.GraphLoader;
  *
  */
 public class MapGraph {
-	//TODO: Add your member variables here in WEEK 2
-	
+	Map<MapNode, List<MapNode>> adjListMap;
+	Set<MapNode> nodes;
+	Set<MapEdge> edges;
 	
 	/** 
 	 * Create a new empty MapGraph 
 	 */
 	public MapGraph()
 	{
-		// TODO: Implement in this constructor in WEEK 2
+		adjListMap = new HashMap<MapNode, List<MapNode>>();
+		nodes = new HashSet<MapNode>();
+		edges = new HashSet<MapEdge>();
 	}
+	
+	public Map<MapNode, List<MapNode>> getAdjacentListMap() {
+		return adjListMap;
+	}
+
+	public void setAdjacentListMap(Map<MapNode, List<MapNode>> map) {
+		this.adjListMap = map;
+	}
+
+	public Set<MapNode> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(Set<MapNode> nodes) {
+		this.nodes = nodes;
+	}
+
+	public Set<MapEdge> getEdges() {
+		return edges;
+	}
+
+	public void setEdges(Set<MapEdge> edges) {
+		this.edges = edges;
+	}
+
 	
 	/**
 	 * Get the number of vertices (road intersections) in the graph
@@ -40,8 +71,7 @@ public class MapGraph {
 	 */
 	public int getNumVertices()
 	{
-		//TODO: Implement this method in WEEK 2
-		return 0;
+		return (nodes == null) ? 0 : nodes.size();
 	}
 	
 	/**
@@ -50,8 +80,12 @@ public class MapGraph {
 	 */
 	public Set<GeographicPoint> getVertices()
 	{
-		//TODO: Implement this method in WEEK 2
-		return null;
+		Set<GeographicPoint> vertices = new HashSet<GeographicPoint>();
+		for (MapNode node : nodes) {
+			// looping through all existing nodes, get the geographic location/vertex, and add it to the new set of vertices.
+			vertices.add(node.getLocation());
+		}
+		return vertices;
 	}
 	
 	/**
@@ -60,8 +94,7 @@ public class MapGraph {
 	 */
 	public int getNumEdges()
 	{
-		//TODO: Implement this method in WEEK 2
-		return 0;
+		return (edges == null) ? 0 : edges.size();
 	}
 
 	
@@ -75,8 +108,39 @@ public class MapGraph {
 	 */
 	public boolean addVertex(GeographicPoint location)
 	{
-		// TODO: Implement this method in WEEK 2
+		if (location != null && !containsVertex(location)) {
+			// since list of nodes don't have the given vertex/location, go ahead with the creation of new Node
+			//create a new MapNode object
+			MapNode node = new MapNode(location);
+			//add the new node to the global Set of nodes
+			nodes.add(node);
+			//add the new node (and no neighbors) to adjacency list map 
+			adjListMap.put(node, new ArrayList<MapNode>());
+			return true;
+			
+		}
 		return false;
+	}
+	
+	/**
+	 * Helper method which returns true if the Map has the given vertex/location, false otherwise.
+	 * @param location
+	 * @return
+	 */
+	private boolean containsVertex(GeographicPoint location) {
+		return (getMapNode(location) != null);
+	}
+	
+	/*
+	 * Helper method which returns the MapNode in the Map which corresponds to the given location
+	 */
+	private MapNode getMapNode(GeographicPoint location) {
+		for (MapNode node : nodes) {
+			if (node.getLocation().equals(location)) {
+				return node;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -93,9 +157,27 @@ public class MapGraph {
 	 */
 	public void addEdge(GeographicPoint from, GeographicPoint to, String roadName,
 			String roadType, double length) throws IllegalArgumentException {
-
-		//TODO: Implement this method in WEEK 2
+		if (from == null || to == null || roadName == null || roadType == null || length < 0) {
+			throw new IllegalArgumentException("Invalid arguments! All arguments must have non-null values!");
+		} 
+		 
+		MapNode startNode = getMapNode(from);
+		MapNode endNode = getMapNode(to);
 		
+		if (startNode == null || endNode == null) {
+			throw new IllegalArgumentException("Invalid locations! Given GeographicPoints are not present in the graph!");
+		}
+		// create new edge
+		MapEdge edge = new MapEdge(from, to, roadName, roadType, length);
+		// add the edge to the node
+		startNode.getNeighbors().add(edge);
+		// add the edge to the Set of edges
+		this.edges.add(edge);
+		// add the end node as adjacent node to the start node
+		List<MapNode> adjacentNodes = this.adjListMap.get(startNode);
+		adjacentNodes.add(endNode);
+		// add the start node and the adjacent nodes list to the Adjacent List Map
+		this.adjListMap.put(startNode, adjacentNodes);
 	}
 	
 
@@ -197,7 +279,14 @@ public class MapGraph {
 		return null;
 	}
 
-	
+	public void printAdjListGraph() {
+		for(MapNode node : adjListMap.keySet()) {
+			System.out.print("\n" + node.getLocation() + "---> ");
+			for (MapNode adjNode : adjListMap.get(node)) {
+				System.out.print(adjNode.getLocation() +";\t");
+			}
+		}
+	}	
 	
 	public static void main(String[] args)
 	{
@@ -206,6 +295,7 @@ public class MapGraph {
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
+		//theMap.printAdjListGraph();
 		
 		// You can use this method for testing.  
 		
