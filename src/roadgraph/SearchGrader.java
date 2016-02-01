@@ -1,16 +1,9 @@
 package roadgraph;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
+import geography.GeographicPoint;
 import util.GraphLoader;
-import geography.*;
+
+import java.util.List;
 
 /**
  * @author UCSD MOOC Development Team
@@ -149,6 +142,8 @@ public class SearchGrader implements Runnable {
             runTest(3, "map3.txt", "Square graph - Each edge has 2 nodes", new GeographicPoint(0, 0), new GeographicPoint(1, 2));
 
             runTest(4, "ucsd.map", "UCSD MAP: Intersections around UCSD", new GeographicPoint(32.8756538, -117.2435715), new GeographicPoint(32.8742087, -117.2381344));
+            
+            runTest(5, "simpletest.map", "SimpleTestMap (from Assignment)", new GeographicPoint(1.0, 1.0), new GeographicPoint(8.0, -1.0));
 
             if (correct == TESTS)
                 feedback = "All tests passed. Great job!" + feedback;

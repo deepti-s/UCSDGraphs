@@ -67,4 +67,59 @@ public class MapEdge {
 		this.distance = distance;
 	}
 
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(distance);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((endPoint == null) ? 0 : endPoint.hashCode());
+		result = prime * result + ((startPoint == null) ? 0 : startPoint.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MapEdge other = (MapEdge) obj;
+		if (displayName == null) {
+			if (other.displayName != null)
+				return false;
+		} else if (!displayName.equals(other.displayName))
+			return false;
+		if (Double.doubleToLongBits(distance) != Double.doubleToLongBits(other.distance))
+			return false;
+		if (endPoint == null) {
+			if (other.endPoint != null)
+				return false;
+		} else if (!endPoint.equals(other.endPoint))
+			return false;
+		if (startPoint == null) {
+			if (other.startPoint != null)
+				return false;
+		} else if (!startPoint.equals(other.startPoint))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "MapEdge [startPoint=" + startPoint + ", endPoint=" + endPoint + ", displayName=" + displayName
+				+ ", type=" + type + ", distance=" + distance + "]";
+	}
+
 }

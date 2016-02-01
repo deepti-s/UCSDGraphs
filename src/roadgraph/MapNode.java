@@ -1,9 +1,9 @@
 package roadgraph;
 
+import geography.GeographicPoint;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import geography.GeographicPoint;
 
 /**
  * @author Deepti S
@@ -34,6 +34,41 @@ public class MapNode {
 
 	public void setNeighbors(List<MapEdge> neighbors) {
 		this.neighbors = neighbors;
-	}	
+	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((neighbors == null) ? 0 : neighbors.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MapNode other = (MapNode) obj;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (neighbors == null) {
+			if (other.neighbors != null)
+				return false;
+		} else if (!neighbors.equals(other.neighbors))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "MapNode [location=" + location + ", neighbors=" + neighbors + "]";
+	}	
 }
