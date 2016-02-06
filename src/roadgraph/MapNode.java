@@ -38,32 +38,21 @@ public class MapNode {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
-		result = prime * result + ((neighbors == null) ? 0 : neighbors.hashCode());
+		int result = location != null ? location.hashCode() : 0;
+		result = 31 * result + (neighbors != null ? neighbors.hashCode() : 0);
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MapNode other = (MapNode) obj;
-		if (location == null) {
-			if (other.location != null)
-				return false;
-		} else if (!location.equals(other.location))
-			return false;
-		if (neighbors == null) {
-			if (other.neighbors != null)
-				return false;
-		} else if (!neighbors.equals(other.neighbors))
-			return false;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof MapNode)) return false;
+
+		MapNode mapNode = (MapNode) o;
+
+		if (location != null ? !location.equals(mapNode.location) : mapNode.location != null) return false;
+		if (neighbors != null ? !neighbors.equals(mapNode.neighbors) : mapNode.neighbors != null) return false;
+
 		return true;
 	}
 

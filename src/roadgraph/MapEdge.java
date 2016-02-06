@@ -70,51 +70,33 @@ public class MapEdge {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
+		int result;
 		long temp;
+		result = startPoint != null ? startPoint.hashCode() : 0;
+		result = 31 * result + (endPoint != null ? endPoint.hashCode() : 0);
+		result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
+		result = 31 * result + (type != null ? type.hashCode() : 0);
 		temp = Double.doubleToLongBits(distance);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((endPoint == null) ? 0 : endPoint.hashCode());
-		result = prime * result + ((startPoint == null) ? 0 : startPoint.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MapEdge other = (MapEdge) obj;
-		if (displayName == null) {
-			if (other.displayName != null)
-				return false;
-		} else if (!displayName.equals(other.displayName))
-			return false;
-		if (Double.doubleToLongBits(distance) != Double.doubleToLongBits(other.distance))
-			return false;
-		if (endPoint == null) {
-			if (other.endPoint != null)
-				return false;
-		} else if (!endPoint.equals(other.endPoint))
-			return false;
-		if (startPoint == null) {
-			if (other.startPoint != null)
-				return false;
-		} else if (!startPoint.equals(other.startPoint))
-			return false;
-		if (type == null) {
-			if (other.type != null)
-				return false;
-		} else if (!type.equals(other.type))
-			return false;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof MapEdge)) return false;
+
+		MapEdge mapEdge = (MapEdge) o;
+
+		if (Double.compare(mapEdge.distance, distance) != 0) return false;
+		if (displayName != null ? !displayName.equals(mapEdge.displayName) : mapEdge.displayName != null) return false;
+		if (endPoint != null ? !endPoint.equals(mapEdge.endPoint) : mapEdge.endPoint != null) return false;
+		if (startPoint != null ? !startPoint.equals(mapEdge.startPoint) : mapEdge.startPoint != null) return false;
+		if (type != null ? !type.equals(mapEdge.type) : mapEdge.type != null) return false;
+
 		return true;
 	}
+
 
 	@Override
 	public String toString() {
