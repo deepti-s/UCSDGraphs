@@ -1,7 +1,5 @@
 package roadgraph;
 
-import geography.GeographicPoint;
-
 /**
  * @author Deepti S
  * 
@@ -9,99 +7,85 @@ import geography.GeographicPoint;
  * Note that each edge is directed, i.e., it only denotes the edge between point A to B (not vice versa).
  */
 public class MapEdge {
-	private GeographicPoint startPoint;
-	private GeographicPoint endPoint;
-	private String displayName;
-	private String type;
-	private double distance;
+	public static final double DEFAULT_LENGTH = 0.0;
+
+	private MapNode startNode;
+	private MapNode endNode;
+	private String roadName;
+	private String roadType;
+	private double length;
 	
-		public MapEdge(GeographicPoint startPoint, GeographicPoint endPoint, String displayName, String type,
-			double distance) {
+	public MapEdge(MapNode start, MapNode end, String roadName) {
+		this(start, end, roadName, "", DEFAULT_LENGTH);
+	}
+
+	public MapEdge(MapNode start, MapNode end, String roadName, String roadType)
+	{
+		this(start, end, roadName, roadType, DEFAULT_LENGTH);
+	}
+
+	public MapEdge(MapNode startNode, MapNode endNode, String roadName, String type, double length) {
 		super();
-		this.startPoint = startPoint;
-		this.endPoint = endPoint;
-		this.displayName = displayName;
-		this.type = type;
-		this.distance = distance;
+		this.startNode = startNode;
+		this.endNode = endNode;
+		this.roadName = roadName;
+		this.roadType = type;
+		this.length = length;
 	}
 
-
-
-	public GeographicPoint getStartPoint() {
-		return startPoint;
+	public MapNode getStartNode() {
+		return startNode;
 	}
 
-	public void setStartPoint(GeographicPoint startPoint) {
-		this.startPoint = startPoint;
+	public void setStartNode(MapNode startNode) {
+		this.startNode = startNode;
 	}
 
-	public GeographicPoint getEndPoint() {
-		return endPoint;
+	public MapNode getEndNode() {
+		return endNode;
 	}
 
-	public void setEndPoint(GeographicPoint endPoint) {
-		this.endPoint = endPoint;
+	public void setEndNode(MapNode endNode) {
+		this.endNode = endNode;
 	}
 
-	public String getDisplayName() {
-		return displayName;
+	public String getRoadName() {
+		return roadName;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setRoadName(String roadName) {
+		this.roadName = roadName;
 	}
 
-	public String getType() {
-		return type;
+	public String getRoadType() {
+		return roadType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setRoadType(String roadType) {
+		this.roadType = roadType;
 	}
 
-	public double getDistance() {
-		return distance;
+	public double getLength() {
+		return length;
 	}
 
-	public void setDistance(double distance) {
-		this.distance = distance;
+	public void setLength(double length) {
+		this.length = length;
 	}
 
-
-	@Override
-	public int hashCode() {
-		int result;
-		long temp;
-		result = startPoint != null ? startPoint.hashCode() : 0;
-		result = 31 * result + (endPoint != null ? endPoint.hashCode() : 0);
-		result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
-		result = 31 * result + (type != null ? type.hashCode() : 0);
-		temp = Double.doubleToLongBits(distance);
-		result = 31 * result + (int) (temp ^ (temp >>> 32));
-		return result;
+	// given one node in an edge, return the other node
+	public MapNode getOtherNode(MapNode node) {
+		if (node.equals(this.startNode))
+			return this.endNode;
+		else if (node.equals(this.endNode))
+			return this.startNode;
+		throw new IllegalArgumentException("Looking for a node that is not in the edge!");
 	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof MapEdge)) return false;
-
-		MapEdge mapEdge = (MapEdge) o;
-
-		if (Double.compare(mapEdge.distance, distance) != 0) return false;
-		if (displayName != null ? !displayName.equals(mapEdge.displayName) : mapEdge.displayName != null) return false;
-		if (endPoint != null ? !endPoint.equals(mapEdge.endPoint) : mapEdge.endPoint != null) return false;
-		if (startPoint != null ? !startPoint.equals(mapEdge.startPoint) : mapEdge.startPoint != null) return false;
-		if (type != null ? !type.equals(mapEdge.type) : mapEdge.type != null) return false;
-
-		return true;
-	}
-
 
 	@Override
 	public String toString() {
-		return "MapEdge [startPoint=" + startPoint + ", endPoint=" + endPoint + ", displayName=" + displayName
-				+ ", type=" + type + ", distance=" + distance + "]";
+		return "MapEdge [startNode=" + startNode + ", endNode=" + endNode + ", roadName=" + roadName
+				+ ", roadType=" + roadType + ", length=" + length + "]";
 	}
 
 }

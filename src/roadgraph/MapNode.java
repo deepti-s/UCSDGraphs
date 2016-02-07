@@ -3,22 +3,29 @@ package roadgraph;
 import geography.GeographicPoint;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Deepti S
  * 
  * A class which represents a node in a map, i.e. geographic locations or intersection of edges.
  */
-public class MapNode {
+public class MapNode implements Comparable<MapNode> {
 	private GeographicPoint location;
-	private List<MapEdge> neighbors;
-	
+	private List<MapEdge> edges;
+	private double actualDistance;
+	private double predictedDistance;
+
 	public MapNode(GeographicPoint geoPoint) {
 		super();
 		this.location = geoPoint;
-		this.neighbors = new ArrayList<MapEdge>();
+		this.edges = new ArrayList<MapEdge>();
+		this.actualDistance = 0.0;
+		this.predictedDistance = 0.0;
 	}
+
 	public GeographicPoint getLocation() {
 		return location;
 	}
@@ -27,20 +34,41 @@ public class MapNode {
 		this.location = nodeLocation;
 	}
 	
-	public List<MapEdge> getNeighbors() {
+	public List<MapEdge> getEdges() {
+		return edges;
+	}
+
+	public void setEdges(List<MapEdge> edges) {
+		this.edges = edges;
+	}
+
+	public double getActualDistance() {
+		return actualDistance;
+	}
+
+	public void setActualDistance(double actualDistance) {
+		this.actualDistance = actualDistance;
+	}
+
+	public double getPredictedDistance() {
+		return predictedDistance;
+	}
+
+	public void setPredictedDistance(double predictedDistance) {
+		this.predictedDistance = predictedDistance;
+	}
+
+	public void addEdge(MapEdge edge) {
+		this.edges.add(edge);
+	}
+
+	/** Return the neighbors of this MapNode */
+	Set<MapNode> getNeighbors() {
+		Set<MapNode> neighbors = new HashSet<MapNode>();
+		for (MapEdge edge : edges) {
+			neighbors.add(edge.getOtherNode(this));
+		}
 		return neighbors;
-	}
-	
-
-	public void setNeighbors(List<MapEdge> neighbors) {
-		this.neighbors = neighbors;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = location != null ? location.hashCode() : 0;
-		result = 31 * result + (neighbors != null ? neighbors.hashCode() : 0);
-		return result;
 	}
 
 	@Override
@@ -50,14 +78,28 @@ public class MapNode {
 
 		MapNode mapNode = (MapNode) o;
 
-		if (location != null ? !location.equals(mapNode.location) : mapNode.location != null) return false;
-		if (neighbors != null ? !neighbors.equals(mapNode.neighbors) : mapNode.neighbors != null) return false;
+		return !(this.location != null ? !this.location.equals(mapNode.location) : mapNode.location != null);
 
-		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.location != null ? this.location.hashCode() : 0;
 	}
 
 	@Override
 	public String toString() {
-		return "MapNode [location=" + location + ", neighbors=" + neighbors + "]";
-	}	
+		final StringBuilder sb = new StringBuilder("MapNode{");
+		sb.append("actualDistance=").append(actualDistance);
+		sb.append(", location=").append(location);
+		sb.append(", edges=").append(edges);
+		sb.append(", predictedDistance=").append(predictedDistance);
+		sb.append('}');
+		return sb.toString();
+	}
+
+	@Override
+	public int compareTo(MapNode otherNode) {
+		return ((Double) this.getPredictedDistance()).compareTo((Double) otherNode.getPredictedDistance());
+	}
 }

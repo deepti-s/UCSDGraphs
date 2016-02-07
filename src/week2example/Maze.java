@@ -283,7 +283,7 @@ public class Maze {
 				found = true;
 				break;
 			}
-			List<MazeNode> neighbors = curr.getNeighbors();
+			List<MazeNode> neighbors = curr.getEdges();
 			ListIterator<MazeNode> it = neighbors.listIterator(neighbors.size());
 			while (it.hasPrevious()) {
 				MazeNode next = it.previous();
