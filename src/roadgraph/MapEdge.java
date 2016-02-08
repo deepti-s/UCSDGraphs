@@ -84,7 +84,7 @@ public class MapEdge {
 
 	@Override
 	public String toString() {
-		return "MapEdge [startNode=" + startNode + ", endNode=" + endNode + ", roadName=" + roadName
+		return "MapEdge [startNode=" + startNode.getLocation() + ", endNode=" + endNode.getLocation() + ", roadName=" + roadName
 				+ ", roadType=" + roadType + ", length=" + length + "]";
 	}
 
