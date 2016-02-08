@@ -358,10 +358,66 @@ public class MapGraph {
 											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 3
-		
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
-		
+
+		// check if the given start and end vertices are present in the given graph
+		// if either of the given nodes are not present in the graph or if the start & goal nodes are same, path cannot be found between them!
+		if (start == null || goal == null || !containsVertex(start) || !containsVertex(goal) || start.equals(goal)) {
+			System.out.println("Invalid values for Start or Goal points! Cannot find the path between them!" );
+			return null;
+		}
+
+		MapNode startNode = pointNodeMap.get(start);
+		MapNode goalNode = pointNodeMap.get(goal);
+		if (startNode == null || goalNode == null || startNode.equals(goalNode)) {
+			System.out.println("Invalid values for Start or Goal points! Cannot find the path between them!" );
+			return null;
+		}
+
+		// setup to begin BFS
+		// initialize queue, visitedNodes Set, parentMap and distancesToNodes
+		PriorityQueue<MapNode> toBeExploredNodesQueue = new PriorityQueue<>();
+		Set<MapNode> visitedNodes = new HashSet<>();
+		Map<MapNode, MapNode> parentMap = new HashMap<>();
+
+		initializeDistances();
+		startNode.setPredictedDistance(0.0);
+
+		// add the start node to the queue and visitedNodes
+		toBeExploredNodesQueue.add(startNode);
+		visitedNodes.add(startNode);
+
+		MapNode current = null;
+
+		// loop as long as queue is not empty
+		while(!toBeExploredNodesQueue.isEmpty()) {
+			// get the next item from queue
+			current = toBeExploredNodesQueue.remove();
+
+			if (!visitedNodes.contains(current)) {
+				visitedNodes.add(current);
+				// Hook for visualization.  See writeup.
+				nodeSearched.accept(current.getLocation());
+			}
+
+			if (current.equals(goalNode)) {
+				// current node is the goal node!!
+				// Return the path from start node to the goal node via parentMap
+				return getReconstructedPath(startNode, goalNode, parentMap);
+			}
+
+			double cumulativeDistance = 0.0;
+			for (MapEdge edge : current.getEdges()) {
+				MapNode node = edge.getEndNode();
+				if (!visitedNodes.contains(node)) {
+					cumulativeDistance = current.getPredictedDistance() + edge.getLength();
+					if (cumulativeDistance < node.getPredictedDistance())   {
+						node.setPredictedDistance(cumulativeDistance);
+						parentMap.put(node, current);
+						toBeExploredNodesQueue.add(node);
+					}
+				}
+			}
+		}
 		return null;
 	}
 
